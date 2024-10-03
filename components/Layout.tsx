@@ -9,10 +9,9 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="p-4 bg-gray-800 text-white flex justify-between items-center">
-        <Link href="/">
-          
-            <h1>Mao Gráfica</h1>
-          
+        <Link href="/" className="flex items-center">
+          <Image src="/logo.png" alt="Mao Gráfica" width={100} height={50} />
+          <h1 className="ml-2">Mao Gráfica</h1>
         </Link>
         <nav>
           <ul className="flex space-x-4">
