@@ -1,12 +1,17 @@
-/* eslint-disable */
-import { useCart } from '../context/CartContext';
-import Image from 'next/image';
 import Layout from '../components/Layout';
-import db from '../db';
+import Image from 'next/image'; // Asegúrate de usar Image de next/image para optimizar imágenes
+import db from '../db'; // Importa la conexión a PostgreSQL
 
-export default function Productos({ products }: { products: any[] }) {
-  const { addToCart } = useCart();
+// Definir un tipo para los productos
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+}
 
+export default function Productos({ products }: { products: Product[] }) {
   return (
     <Layout>
       <h1 className="text-2xl font-bold mb-4">Nuestros Productos</h1>
@@ -23,10 +28,7 @@ export default function Productos({ products }: { products: any[] }) {
             <h2 className="text-xl font-semibold mt-2">{product.name}</h2>
             <p className="mt-1 text-gray-700">{product.description}</p>
             <p className="mt-1 font-bold">{product.price} ARS</p>
-            <button
-              className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
-              onClick={() => addToCart(product)}
-            >
+            <button className="bg-blue-500 text-white px-4 py-2 rounded mt-2">
               Añadir al carrito
             </button>
           </div>
@@ -36,13 +38,19 @@ export default function Productos({ products }: { products: any[] }) {
   );
 }
 
-// Esta función se ejecuta solo en el servidor para obtener los productos
+// Esta función se ejecuta solo en el servidor
 export async function getServerSideProps() {
-  const products = db.prepare('SELECT * FROM products').all();
-
-  return {
-    props: {
-      products,
-    },
-  };
+  const query = 'SELECT * FROM products';
+  
+  try {
+    const { rows: products } = await db.query(query);
+    return {
+      props: { products },
+    };
+  } catch (error) {
+    console.error('Error al obtener productos:', error);
+    return {
+      props: { products: [] },
+    };
+  }
 }
