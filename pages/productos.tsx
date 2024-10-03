@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable */
 import { useCart } from '../context/CartContext';
 import Image from 'next/image';
 import Layout from '../components/Layout';

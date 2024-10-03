@@ -4,6 +4,7 @@ interface Product {
   id: number;
   name: string;
   price: number;
+  image: string; // Asegúrate de que la propiedad image esté definida aquí
 }
 
 interface CartContextType {
